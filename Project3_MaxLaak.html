@@ -1,0 +1,144 @@
+<!doctype html>
+<html>
+<head>
+<title>Project 3 - Max Laak</title>
+<script>
+    var canvas;
+    var context;
+    var timerOne;
+    var timerTwo;
+    var shapes = []
+    var myShapes = ['diamond','heart','rectangle','smile','moon','text'];
+
+      function init() {
+        canvas = document.getElementById('canvas');
+        context = canvas.getContext("2d");
+ 
+        window.addEventListener('resize', resizeCanvas, false);
+        window.addEventListener('orientationchange', resizeCanvas, false);
+        resizeCanvas();
+
+    timerOne = setInterval(resizeCanvas, 25);
+    timerTwo = setInterval(newShape, 250);
+      }
+    function fillBackgroundColor() {
+     context.fillStyle = 'grey';
+     context.fillRect(0, 0, canvas.width, canvas.height);
+    }
+    function degreesToRadians(degrees) {
+    return (degrees * Math.PI)/180;
+    }
+    function Shape(x, y, color) {
+    this.x = x;
+    this.y = y;
+    this.vx = Math.random()*2;
+    this.vy = Math.random()*2;
+    this.size = 55;
+    this.color = color;
+    this.shape = myShapes[Math.floor(Math.random()*myShapes.length)];
+    }
+    function newShape() {
+    var x = Math.random() * canvas.width;
+    var y = Math.random() * canvas.height;
+    var colors = ["blue", "white", "red"];
+    var color = colors[Math.floor(Math.random()*colors.length)];
+    shapes.push(new Shape(x, y, color));    
+    }
+    function drawSmile(smile) {
+      context.beginPath();
+      context.arc(smile.x+75,smile.y-75,50,0,Math.PI*2,true);
+      context.moveTo(smile.x+110,smile.y-75);
+      context.arc(smile.x+75,smile.y-75,35,0,Math.PI,false);
+      context.moveTo(smile.x+65,smile.y-65);
+      context.arc(smile.x+60,smile.y-65,5,0,Math.PI*2,true);
+      context.moveTo(smile.x+95,smile.y-65);
+      context.arc(smile.x+90,smile.y-65,5,0,Math.PI*2,true);
+      context.strokeStyle = smile.color;
+      context.stroke();
+
+    }
+    function drawRectangle(rectangle) {
+         context.beginPath();
+         context.rect(rectangle.x+300, rectangle.y+180, rectangle.size+50, rectangle.size);
+     context.fillStyle = rectangle.color;
+         context.fill();
+         context.lineWidth = 5;
+         context.strokeStyle = 'black';
+         context.stroke();
+      }  
+      function drawHeart(heart) {
+        context.beginPath();
+        context.moveTo(heart.x+75,heart.y-40);
+        context.bezierCurveTo(heart.x+75,heart.y-37,heart.x+70,heart.y-25,heart.x+50,heart.y-25);
+        context.bezierCurveTo(heart.x+20,heart.y-25,heart.x+20,heart.y-62.5,heart.x+20,heart.y-62.5);
+        context.bezierCurveTo(heart.x+20,heart.y-80,heart.x+40,heart.y-102,heart.x+75,heart.y-120);
+        context.bezierCurveTo(heart.x+110,heart.y-102,heart.x+130,heart.y-80,heart.x+130,heart.y-62.5);
+        context.bezierCurveTo(heart.x+130,heart.y-62.5,heart.x+130,heart.y-25,heart.x+100,heart.y-25);
+        context.bezierCurveTo(heart.x+85,heart.y-25,heart.x+75,heart.y-37,heart.x+75,heart.y-40);
+        context.fill();
+        context.fillStyle = heart.color;
+        context.strokeStyle = 'black';
+        context.stroke();
+      }
+    function drawMoon(moon) {
+        context.beginPath();
+        context.arc(moon.x+208, moon.y-180,moon.size, 0, Math.PI, false);
+        context.closePath();
+        context.lineWidth = 5;
+        context.fillStyle = moon.color;
+        context.fill();
+        context.strokeStyle = 'black';
+        context.stroke();
+      }
+
+    function drawDiamond(diamond) {
+        context.beginPath();
+        context.moveTo(diamond.x+70,diamond.y-10);
+        context.lineTo(diamond.x+140,diamond.y-100);
+        context.lineTo(diamond.x+70, diamond.y-200);
+        context.lineTo(diamond.x+10, diamond.y-100);
+        context.lineWidth = 5;
+        context.fillStyle = diamond.color;
+        context.strokeStyle = "black";
+        context.closePath();
+        context.fill();
+        context.stroke();     
+      }
+      function drawText(text) {
+        context.fillStyle = 'black';
+        context.font = '5em serif';
+        context.textAlign = 'right';
+        context.fillText('USA', canvas.width*Math.random()*2, canvas.height*Math.random()*2);
+      }
+      function resizeCanvas() {
+        canvas.width = window.innerWidth-20;
+        canvas.height = window.innerHeight-20;
+    fillBackgroundColor();
+    for (var i=0; i<shapes.length; i++) {
+      if (shapes[i].shape == 'rectangle') {
+        drawRectangle(shapes[i]);
+      } else if (shapes[i].shape == 'smile') {
+        drawSmile(shapes[i]);
+      } else if (shapes[i].shape == 'heart') {
+        drawHeart(shapes[i]);
+      } else if (shapes[i].shape == 'diamond') {
+        drawDiamond(shapes[i]);
+      } else if (shapes[i].shape == 'moon') {
+        drawMoon(shapes[i]);
+      } else if (shapes[i].shape == 'text') {
+        drawText(shapes[i]);
+      }
+      if (shapes[i].x + shapes[i].vx > canvas.width || shapes[i].x + shapes[i].vx < 0)
+        shapes[i].vx = -shapes[i].vx;
+      if (shapes[i].y + shapes[i].vy > canvas.height || shapes[i].y + shapes[i].vy < 0)
+        shapes[i].vy = -shapes[i].vy;
+        shapes[i].x += shapes[i].vx;
+        shapes[i].y += shapes[i].vy;
+    }  
+  }
+  window.onload = init;
+</script>
+</head>
+<body>
+<canvas id='canvas' width=500 height=500></canvas>
+</body>   
