@@ -1,0 +1,131 @@
+<!doctype html>
+<html>
+<head>
+<title>Project 3 - Max Laak</title>
+<style>
+
+canvas {
+    padding-left: 0;
+    padding-right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    width:40%;
+    height:40%;
+    border
+}
+
+</style>
+<script>
+	  var canvas;
+	  var context;
+	  var timerOne;
+	  var timerTwo;
+	  var shapes = []
+	  var myShapes = ['smile'];
+
+      function init() {
+        canvas = document.getElementById('canvas');
+        canvas.addEventListener('keydown', pressedKeyDown, true);
+        canvas.addEventListener("mousedown", pressedMouseDown, true);
+        context = canvas.getContext("2d");
+
+       	window.addEventListener('resize', resizeCanvas, false);
+        resizeCanvas();
+
+		timerOne = setInterval(resizeCanvas, 25);
+		timerTwo = setInterval(newShape, 800);
+      }
+
+
+	   function pressedKeyDown(p){
+		if (p.keyCode == 38) {
+			clearCanvas();
+	  	}
+	  }
+
+	  function pressedMouseDown() {
+	  	clearCanvas();
+	  }
+
+
+	  function clearCanvas() {
+	  canvas.width = canvas.width;
+	  }
+
+	  function fillBackgroundColor() {
+		 context.fillStyle = 'black';
+		 context.fillRect(0, 0, canvas.width, canvas.height);
+	  }
+	  function degreesToRadians(degrees) {
+		return (degrees * Math.PI)/180;
+	  }
+	  function Shape(x, y, color) {
+		this.x = x;
+		this.y = y;
+		this.vx = Math.random()*2;
+		this.vy = Math.random()*2;
+		this.size = 55;
+		this.color = color;
+		this.shape = myShapes[Math.floor(Math.random()*myShapes.length)];
+	  }
+	  function newShape() {
+		var x = Math.random() * canvas.width;
+		var y = Math.random() * canvas.height;
+		var colors = ["orange", "white", "pink"];
+		var color = colors[Math.floor(Math.random()*colors.length)];
+		shapes.push(new Shape(x, y, color));		
+	  }
+	  function drawSmile(smile) {
+	  	context.lineWidth=10;
+	    context.beginPath();
+	    context.arc(smile.x+75,smile.y-75,50,0,Math.PI*2,true);
+	    context.moveTo(smile.x+110,smile.y-75);
+	    context.arc(smile.x+75,smile.y-75,35,0,Math.PI,false);
+	    context.moveTo(smile.x+65,smile.y-65);
+	    context.arc(smile.x+60,smile.y-65,5,0,Math.PI*2,true);
+	    context.moveTo(smile.x+95,smile.y-65);
+	    context.arc(smile.x+90,smile.y-65,5,0,Math.PI*2,true);
+	    context.strokeStyle = smile.color;
+	    context.stroke();
+
+	  }
+
+      function resizeCanvas() {
+
+		fillBackgroundColor();
+		for (var i=0; i<shapes.length; i++) {
+			if (shapes[i].shape == 'smile') {
+				drawSmile(shapes[i]);
+			} else if (shapes[i].shape == 'smile') {
+				drawSmile(shapes[i]);
+			} else if (shapes[i].shape == 'smile') {
+				drawSmile(shapes[i]);
+			} else if (shapes[i].shape == 'smile') {
+				drawSmile(shapes[i]);
+			} else if (shapes[i].shape == 'smile') {
+				drawSmile(shapes[i]);
+			}
+			if (shapes[i].x + shapes[i].vx > canvas.width || shapes[i].x + shapes[i].vx < 0)
+				shapes[i].vx = -shapes[i].vx;
+			if (shapes[i].y + shapes[i].vy > canvas.height || shapes[i].y + shapes[i].vy < 0)
+				shapes[i].vy = -shapes[i].vy;
+				shapes[i].x += shapes[i].vx;
+				shapes[i].y += shapes[i].vy;
+		}
+	}
+		window.onload = init;
+</script>
+	
+	<h1 align="center" style="font-family:verdana"> Final Project - Max Laak </h1>
+
+</head>
+
+<body bgcolor="#ffb366">
+<canvas id='canvas' width=500 height=500 style="border: 2px solid #000000;" tabindex ='0'> </canvas>
+</body>
+
+<footer>
+<h2 align="center" style="font-family:verdana"> Start the smiley face strobe light party by spam clicking the smiley or mashing the up arrow </p>
+
+</footer>  
